@@ -1,79 +1,76 @@
-import prisma from "@/app/prismadb"
-import { NextResponse } from "next/server"
+import prisma from "@/app/prismadb";
+import { NextResponse } from "next/server";
 
-export async function GET (request:Request, { params }: { params: { id: string } }) {
-    try {       
-        
-        const {id} = params;
+export const GET = async (
+  request: Request,
+  { params }: { params: { id: string } },
+) => {
+  try {
+    const { id } = params;
 
-        const post = await prisma.post.findUnique({
-            where:{
-                id
-            }
-        });
+    const post = await prisma.post.findUnique({
+      where: {
+        id,
+      },
+    });
 
-        if(!post){
-            return NextResponse.json(
-                {message: "Post not found"},
-                {status: 404}
-            )
-        }
-
-        return NextResponse.json(post);
-
-    } catch (err) {
-        return NextResponse.error()
+    if (!post) {
+      return NextResponse.json({ message: "Post not found" }, { status: 404 });
     }
-}
 
-export async function PATCH (request:Request, { params }: { params: { id: string } }) {
-    try {
-        const body = await request.json();
-        const { title, image, description, tags } = body;
+    return NextResponse.json(post);
+  } catch (err) {
+    return NextResponse.error();
+  }
+};
 
-        const {id} = params;
+export const PATCH = async (
+  request: Request,
+  { params }: { params: { id: string } },
+) => {
+  try {
+    const body = await request.json();
+    const { title, image, description, tags } = body;
 
-        const updatePost = await prisma.post.update({
-            where:{
-                id
-            },
-            data: {
-                title,
-                image,
-                description,
-                tags
-            }
-        })
+    const { id } = params;
 
-        if(!updatePost){
-            return NextResponse.json(
-                {message: "Post not found"},
-                {status: 404}
-            )
-        }
+    const updatePost = await prisma.post.update({
+      where: {
+        id,
+      },
+      data: {
+        title,
+        image,
+        description,
+        tags,
+      },
+    });
 
-        return NextResponse.json(updatePost);
-
-    } catch (err) {
-
-        return NextResponse.error()
+    if (!updatePost) {
+      return NextResponse.json({ message: "Post not found" }, { status: 404 });
     }
-}
 
-export async function DELETE (request:Request, { params }: { params: { id: string } }) {
-    try {       
-        
-        const {id} = params;
+    return NextResponse.json(updatePost);
+  } catch (err) {
+    return NextResponse.error();
+  }
+};
 
-        await prisma.post.delete({
-            where:{
-                id
-            }
-        });        
+export const DELETE = async (
+  request: Request,
+  { params }: { params: { id: string } },
+) => {
+  try {
+    const { id } = params;
 
-        return NextResponse.json("Post has been deleted");
+    await prisma.post.delete({
+      where: {
+        id,
+      },
+    });
 
-    } catch (err) {
-        return NextResponse.error()
-    }
-}
+    return NextResponse.json("Post has been deleted");
+  } catch (err) {
+    return NextResponse.error();
+  }
+};

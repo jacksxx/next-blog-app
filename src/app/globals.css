@@ -9,26 +9,25 @@ body {
 }
 
 @layer components {
-
   .buttonRegister {
-    @apply rounded-md border-[1px] w-[100px]  border-black mt-2 hover:bg-neutral-300 text-black font-semibold ;
+    @apply rounded-md border-[1px] w-[100px]  border-black mt-2 hover:bg-neutral-300 text-black font-semibold;
   }
   .inputGeral {
     @apply outline-none rounded-md border-[1px] border-neutral-500 focus:border-black pl-2 pr-6;
-  }  
+  }
   .textLabel {
     @apply text-2xl;
   }
   .textH1 {
-    @apply text-2xl font-medium;    
+    @apply text-2xl font-medium;
   }
   .textP {
-    @apply text-[18px] text-justify ;
+    @apply text-[18px] text-justify;
   }
   .navComponents {
-    @apply flex items-center space-x-2 ;
+    @apply flex items-center space-x-2;
   }
-  .formComponent{
-    @apply flex flex-col text-[20px] py-2 gap-3 items-center; 
+  .formComponent {
+    @apply flex flex-col text-[20px] py-2 gap-3 items-center;
   }
 }
