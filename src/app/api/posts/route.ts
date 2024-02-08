@@ -15,7 +15,7 @@ export const GET = async () => {
 export const POST = async (request: Request) => {
   try {
     const body = await request.json();
-    const { title, image, description, tags } = body;
+    const { title, image, description, tags, createdAt, updatedAt } = body;
 
     const newPost = await prisma.post.create({
       data: {
@@ -23,6 +23,8 @@ export const POST = async (request: Request) => {
         image,
         description,
         tags,
+        createdAt,
+        updatedAt,
       },
     });
 

@@ -4,6 +4,7 @@ import { Input } from "@/components/Input";
 import { TextArea } from "@/components/TextArea";
 import { Post } from "@/types/Post";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -11,28 +12,53 @@ import { SubmitHandler, useForm } from "react-hook-form";
 interface Imodals {
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 const PostForm = (modal: Imodals) => {
   const router = useRouter();
+  const { data: session } = useSession();
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<Post>();
 
   const onSubmit: SubmitHandler<Post> = (data, event) => {
     event?.preventDefault();
-    axios
-      .post("/api/posts", data)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        modal.setModalOpen(false);
-        router.refresh();
-      });
+
+    //URL check
+    try {
+      new URL(data.image);
+    } catch {
+      setError("image", { message: "A imagem precisa ser uma URL" });
+      return;
+    }
+    //Check values on fields is no empty
+    if (!data.title || !data.image || !data.tags || !data.description) {
+      setError("root", { message: "Preencha todos os campos" });
+      return;
+    }
+    data.tags = data.tags
+      .split(" ")
+      .map((tag) => tag.trim().toLowerCase())
+      .join(" ");    
+    try {
+      axios
+        .post("/api/posts", data)
+        .then((res) => {
+          console.log(res);
+          console.log(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          modal.setModalOpen(false);
+          router.refresh();
+        });
+    } catch {
+      console.log("Error to POST");
+    }
   };
 
   return (
@@ -48,7 +74,7 @@ const PostForm = (modal: Imodals) => {
           />
           <Input
             //type='file'
-            label="Imagem"
+            label="URL da Imagem"
             id="image"
             className="inputGeral w-[450px]"
             {...register("image")}
@@ -65,9 +91,20 @@ const PostForm = (modal: Imodals) => {
             id="Tags"
             placeholder="Insira as Tags separadas por virgula"
             className="inputGeral w-[450px]"
-            {...register("Tags")}
+            {...register("tags")}
           />
+          {/*Adicionar Input que cadastra Nome do User que criou o post */}
           <Button name="Submit" className="buttonRegister" />
+          {errors.image && (
+            <p className="text-black font-semibold px-2 border-2 border-black bg-red-400">
+              {errors.image.message}
+            </p>
+          )}
+          {errors.root && (
+            <p className="text-black font-semibold px-2 border-2 border-black bg-red-400">
+              {errors.root.message}
+            </p>
+          )}
         </form>
       </div>
     </>

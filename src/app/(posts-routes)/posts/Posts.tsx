@@ -9,20 +9,25 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/components/Input";
 import { TextArea } from "@/components/TextArea";
 import { Button } from "@/components/Button";
-import { queryClient } from "@/app/lib/queryClient";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Card from "@/components/Card";
 
 const Posts = ({ post }: { post: Post }) => {
   const [openModalEdit, setOpenModalEdit] = useState(false);
   const [openModalDelete, setOpenModalDelete] = useState(false);
   const router = useRouter();
-  const client = useQueryClient();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Post>();
-
+  } = useForm<Post>({
+    defaultValues: {
+      title: post.title,
+      description: post.description,
+      image: post.image,
+      tags: post.tags,
+    },
+  });
   const onSubmit: SubmitHandler<Post> = (data) => {
     axios
       .patch(`/api/posts/${post.id}`, data)
@@ -37,7 +42,6 @@ const Posts = ({ post }: { post: Post }) => {
         router.refresh();
       });
   };
-
   const handleDelete = (id: String) => {
     axios
       .delete(`/api/posts/${post.id}`)
@@ -54,13 +58,25 @@ const Posts = ({ post }: { post: Post }) => {
   };
 
   return (
-    <li className="p-3 my-5 bg-slate-200" key={post.id}>
-      <h1 className="textH1">{post.title}</h1>
-      <p className="textP">{post.description}</p>
-      <div className="pt-3 ">
+    <li
+      className="my-5 rounded-md border-[1px] border-black bg-slate-50 p-1"
+      key={post.id}
+    >
+      <Card
+        description={post.description}
+        image={post.image}
+        tags={post.tags}
+        title={post.title}
+        id={post.id}
+        createdAt={post.createdAt}
+        updatedAt={post.updatedAt}
+        key={post.id}
+      />
+      <div className="py-2 flex flex-row gap-10 place-content-center">
+        {/*EDIT button and Form */}
         <Button
           name="Editar"
-          className="bg-blue-700 text-white w-20 mb-1"
+          className="bg-blue-700 text-white w-20 h-10 rounded-full"
           onClick={() => setOpenModalEdit(true)}
         />
         <Modal modalOpen={openModalEdit} setModalOpen={setOpenModalEdit}>
@@ -90,15 +106,15 @@ const Posts = ({ post }: { post: Post }) => {
               id="Tags"
               placeholder="Insira as Tags"
               className="inputGeral w-[450px]"
-              {...register("Tags")}
+              {...register("tags")}
             />
             <Button name="Submit" className="buttonRegister" />
           </form>
         </Modal>
-
+        {/*DELETE button and Form */}
         <Button
           name="Deletar"
-          className="bg-red-700 text-white w-20"
+          className="bg-red-700 text-white w-20 h-10 rounded-full"
           onClick={() => setOpenModalDelete(true)}
         />
         <Modal modalOpen={openModalDelete} setModalOpen={setOpenModalDelete}>

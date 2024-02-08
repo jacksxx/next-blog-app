@@ -25,15 +25,10 @@ const Page = () => {
     <>
       <h1 className="textH1">POSTS PAGE</h1>
       <AddPost />
-      <ul>
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : posts ? (
-          <PostList posts={posts} />
-        ) : (
-          <p className="textP">No posts available.</p>
-        )}
-      </ul>
+      {isLoading ? <p>Loading...</p> : posts && <PostList posts={posts} />}
+      {posts && posts.length === 0 && (
+        <h1 className="textH1 italic py-10">No posts available.</h1>
+      )}
     </>
   );
 };
