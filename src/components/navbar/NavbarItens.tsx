@@ -1,9 +1,5 @@
 import React from "react";
-const NavbarItens = [
-  {
-    label: "Home",
-    href: "/",
-  },
+const NavbarItens = [  
   {
     label: "About",
     href: "/about",
