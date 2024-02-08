@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-const RegisterForm = () => {
+const RegisterForm = () => {  
   const router = useRouter();
   const {
     register,
