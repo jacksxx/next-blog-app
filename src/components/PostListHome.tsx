@@ -31,7 +31,7 @@ const PostListHome = ({ posts }: { posts: Post[] }) => {
                 .join("#")}
             </p>
             <p className="text-[15px] italic text-end">
-              {new Date(post.createdAt).toDateString()}
+              {new Date(post.createdAt).toLocaleDateString()}
             </p>
           </div>
         </li>
