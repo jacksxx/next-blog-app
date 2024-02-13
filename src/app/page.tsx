@@ -5,6 +5,7 @@ import Link from "next/link";
 import SearchPost from "@/components/SearchPost";
 import PostListHome from "@/components/PostListHome";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const getPosts = async () => {
   const res = await axios.get("/api/posts");
@@ -12,7 +13,7 @@ const getPosts = async () => {
 };
 
 export default function Home() {
-  const { data: session } = useSession();
+  const { data: session } = useSession();  
   const { data: posts, isLoading } = useQuery({
     queryKey: ["posts"],
     queryFn: getPosts,
@@ -35,7 +36,14 @@ export default function Home() {
             {isLoading ? (
               <p className="text-center">Loading...</p>
             ) : (
-              posts && <PostListHome posts={posts} />
+              posts && (
+                <Link
+                  key={posts.id}
+                  href={`/posts/${posts.id}`}                  
+                >
+                  <PostListHome posts={posts} />
+                </Link>
+              )
             )}
             {posts && posts.length === 0 && (
               <div className="text-center">
