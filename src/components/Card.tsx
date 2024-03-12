@@ -10,12 +10,12 @@ const Card = (post: Post) => {
           src={post.image}
           width={500}
           height={600}
-          className="h-full w-full max-h-[350px] sm:max-h-[300px]"
+          className="h-full w-full max-h-[350px] sm:max-h-[300px] min-h-[300px]"
         />
       </div>
       <div className="m-2 flex flex-col">
         <h1 className="textH1">{post.title}</h1>
-        <h2 className="textP italic">{post.description}</h2>
+        <h2 className="textP italic break-words">{post.description}</h2>
         <p className="textP text-[10px]">
           #
           {post.tags
