@@ -40,14 +40,7 @@ const NavbarHidden = (nav: INav) => {
                   My Posts
                 </Link>
               </li>
-            )}
-            {session?.user && (
-              <li className="navComponents">
-                <Link href={"/dashboard"} className=" py-3 inline-block w-full">
-                  My Dashboard
-                </Link>
-              </li>
-            )}
+            )}            
           </ul>
         </div>
       )}

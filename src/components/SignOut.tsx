@@ -25,7 +25,7 @@ const SignOut = ({ showProfile }: { showProfile: boolean }) => {
   }
   return (
     <ul
-      className={`py-2 px-1 text-neutral-600 absolute bg-white z-[2] rounded-lg shadow-lg ${
+      className={`py-2 px-2 text-neutral-600 absolute border-[1px] border-black bg-white z-[2] rounded-lg shadow-lg ${
         showProfile ? "" : "hidden"
       }`}
     >

@@ -5,7 +5,8 @@ import Link from "next/link";
 import SearchPost from "@/components/SearchPost";
 import PostListHome from "@/components/PostListHome";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
 
 const getPosts = async () => {
   const res = await axios.get("/api/posts");
@@ -13,12 +14,27 @@ const getPosts = async () => {
 };
 
 export default function Home() {
-  const { data: session } = useSession();  
+  const { data: session } = useSession();
   const { data: posts, isLoading } = useQuery({
     queryKey: ["posts"],
     queryFn: getPosts,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
+  const [postsFilters, setPostsFilters] = useState<any[]>([]);
+
+  useEffect(() => {
+    setPostsFilters((_) => posts);
+  }, [isLoading, posts]);
+
+  function filterPosts(tag: string) {
+    setPostsFilters((_) => {
+      return posts.filter((e: any) =>
+        e.tags.includes(tag.trim().toLowerCase())
+      );      
+    });
+  }
+
+  console.log(posts);
 
   return (
     <>
@@ -28,7 +44,7 @@ export default function Home() {
             <h1 className="textH1 text-center pb-3">
               VEJA NOSSOS POSTS MAIS RECENTES
             </h1>
-            <SearchPost />
+            <SearchPost filterPosts={filterPosts} />
           </div>
           <h1 className="textH1 text-center py-2">P O S T S </h1>
 
@@ -36,16 +52,12 @@ export default function Home() {
             {isLoading ? (
               <p className="text-center">Loading...</p>
             ) : (
-              posts && (
-                <Link
-                  key={posts.id}
-                  href={`/posts/${posts.id}`}                  
-                >
-                  <PostListHome posts={posts} />
-                </Link>
+              postsFilters !== undefined && (
+                <PostListHome posts={postsFilters} />
               )
             )}
-            {posts && posts.length === 0 && (
+
+            {postsFilters && postsFilters.length === 0 && (
               <div className="text-center">
                 <h1 className="textH1 italic py-10">No posts available.</h1>
                 <Link

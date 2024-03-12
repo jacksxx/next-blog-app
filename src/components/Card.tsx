@@ -10,7 +10,7 @@ const Card = (post: Post) => {
           src={post.image}
           width={500}
           height={600}
-          className="h-full w-full max-h-[350px] sm:max-h-[200px]"
+          className="h-full w-full max-h-[350px] sm:max-h-[300px]"
         />
       </div>
       <div className="m-2 flex flex-col">
@@ -19,7 +19,7 @@ const Card = (post: Post) => {
         <p className="textP text-[10px]">
           #
           {post.tags
-            .split(" ")
+            ?.split(" ")
             .map((tag) => tag.trim().toLowerCase())
             .join("#")}
         </p>

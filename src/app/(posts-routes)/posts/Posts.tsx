@@ -59,7 +59,7 @@ const Posts = ({ post }: { post: Post }) => {
 
   return (
     <li
-      className="my-5 rounded-md border-[1px] border-black bg-slate-50 p-1"
+      className="my-5 rounded-md border-[1px] border-black bg-slate-50 p-1 "
       key={post.id}
     >
       <Card

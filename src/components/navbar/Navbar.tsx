@@ -56,27 +56,11 @@ const Navbar: React.FC = () => {
                     My Posts
                   </Link>
                 </li>
-              )}
-              {session?.user && (
-                <li className="navComponents">
-                  <Link
-                    href={"/dashboard"}
-                    className={` py-3 inline-block w-full 
-                                        ${
-                                          pathname === "/dashboard"
-                                            ? "font-bold"
-                                            : ""
-                                        }
-                                         hover:text-neutral-500 transition-colors duration-100`}
-                  >
-                    My Dashboard
-                  </Link>
-                </li>
-              )}
+              )}              
             </ul>
           </nav>
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center space-x-4 pr-2">
           <div
             onClick={() => setShowProfile(!showProfile)}
             className="relativa cursor-pointer"

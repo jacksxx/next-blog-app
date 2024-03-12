@@ -6,37 +6,36 @@ import { Post } from "@/types/Post";
 import { useRouter } from "next/navigation";
 import { FaSearch } from "react-icons/fa";
 
-const SearchPost = () => {
+interface SearchPostProps{
+  filterPosts: (tag: string)=>void;
+}
+const SearchPost = ({filterPosts}:SearchPostProps) => {
   const router = useRouter();
 
-  const { register, handleSubmit } = useForm<Post>();
+  const { register, handleSubmit,watch } = useForm<Post>();
+  const tagsValue = watch("tags");
 
   const onSubmit: SubmitHandler<Post> = async (data, event) => {
     event?.preventDefault();
-    try {
-      const tagsArray = data.tags
-        .split(" ")
-        .map((tag) => tag.trim().toLowerCase())
-        .filter((tag) => tag.toLowerCase())
-        .join(" ");
+    console.log(data.tags);
+    filterPosts(data.tags);
 
-      console.log(tagsArray);
-      router.push(`/search?${tagsArray}`);
-    } catch (error) {
-      console.log("Error to SearchPost", error);
-    }
   };
+  // const handleTagsChange = (event:any) => {
+  //   filterPosts(event.target.value);
+  // }
+
 
   return (
     <form
       className="flex items-center justify-center gap-1 py-5"
       onSubmit={handleSubmit(onSubmit)}
-    >
-      <FaSearch />
+    >      
       <Input
         className="inputSearch bg-lime-50/60 "
         placeholder="Busque por Tags Aqui"
         {...register("tags")}
+        // onChange={handleTagsChange}
       />
       <Button
         name={"Buscar"}
